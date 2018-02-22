@@ -1,7 +1,7 @@
 import os
 
 cwd = os.getcwd()
-cwd += '/copied_dataset'
+cwd += '/dataset_original'
 FList = os.listdir(cwd)
 os.chdir(cwd)
 FListC = FList[0:]
