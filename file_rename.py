@@ -7,5 +7,6 @@ FListC = FList[0:]
 m = 0
 for i in FListC:
     fileExtension = os.path.splitext(i)[1]
+    # shutil.move(i,str(m)+fileExtension)
     os.rename(i,str(m)+fileExtension)
     m = m+1

@@ -19,4 +19,4 @@ for j in range(0,len(FListC)):
     n=n+1
     os.chdir('..')
     os.chdir(new_cwd)
-#hello[0:len(hello)-2]
+os.chdir('../..')
