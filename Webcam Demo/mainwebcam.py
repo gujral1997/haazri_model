@@ -33,18 +33,15 @@ import face_recognition
 image = face_recognition.load_image_file("test.jpeg")
 
 # Find all the faces in the image using the default HOG-based model.
-# This method is fairly accurate, but not as accurate as the CNN model and not GPU accelerated.
-# See also: find_faces_in_picture_cnn.py
 face_locations = face_recognition.face_locations(image)
 
-# print("I found {} face(s) in this photograph.".format(len(face_locations)))
 i = 1
+os.system('mkdir images')
 for face_location in face_locations:
 
     # Print the location of each face in this image
     top, right, bottom, left = face_location
     # print("A face is located at pixel location Top: {}, Left: {}, Bottom: {}, Right: {}".format(top, left, bottom, right))
-    # You can access the actual face itself like this:
     face_image = image[top:bottom, left:right]
     pil_image = Image.fromarray(face_image)
     pil_image.save('images/'+str(i)+'.jpg')
@@ -55,6 +52,8 @@ for face_location in face_locations:
 
 import os
 import time
+import MySQLdb
+db= MySQLdb.connect(host="localhost", user="root",passwd="klo", db="Haazri")
 start_time = time.time()
 print("--- %s seconds ---" % (time.time() - start_time))
 from PIL import Image
@@ -64,7 +63,12 @@ cwd = os.getcwd()+'/copied_dataset'
 flag = '[False]'
 wd =os.getcwd()+'/images'
 List = os.listdir(wd)
-for k in range(1,2,1):
+print(wd)
+print(List)
+files=len(List)
+print(files)
+
+for k in range(1,files+1,1):
     unknown_image = face_recognition.load_image_file(wd+'/'+str(k)+'.jpg')
     FList = os.listdir(cwd)
     FListC = FList[0:]
@@ -76,7 +80,10 @@ for k in range(1,2,1):
         for j in new_FListC:
             test_image=face_recognition.load_image_file(new_cwd+'/'+j)
             test_face_encoding = face_recognition.face_encodings(test_image)[0]
-            unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
+            try:
+                unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
+            except:
+                pass
 
             known_faces = [
                 test_face_encoding
@@ -85,7 +92,12 @@ for k in range(1,2,1):
             print (results)
             if (str(results) == '[True]' or m == 1):
                 if(str(results) == '[True]'):
+                    print("i=",i)
+                    id=i
                     flag = '[True]'
+                    cur = db.cursor()
+                    cur.execute("""UPDATE attendance SET Status='true' WHERE SNo=%s""",(id))
+                    db.commit()
                 break
             m+=1
         if(flag == '[True]'):
@@ -94,4 +106,5 @@ for k in range(1,2,1):
             count+=1
             break
 print (count)
+os.system('rm -rf '+wd)
 print("--- %s seconds ---" % (time.time() - start_time))
