@@ -10,8 +10,8 @@ while(True):
 
 
     # Display the resulting frame
-    cv2.imshow('frame',frame)
-    cv2.waitKey(1)
+    # cv2.imshow('frame',frame)
+    cv2.waitKey(10)
     cv2.imwrite('test.jpeg',frame)
 
 
@@ -45,13 +45,12 @@ while(True):
         pil_image.save('images/'+str(i)+'.jpg')
         i = i+1
         # pil_image.show() # To save the image
-
     ###################################
 
     import os
     import time
     import MySQLdb
-    db= MySQLdb.connect(host="localhost", user="root",passwd="klo", db="haazriLogin")
+    db= MySQLdb.connect(host="localhost", user="root",passwd="root", unix_socket='/Applications/MAMP/tmp/mysql/mysql.sock', db="haazriLogin")
     start_time = time.time()
     print("--- %s seconds ---" % (time.time() - start_time))
     from PIL import Image

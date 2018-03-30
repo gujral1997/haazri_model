@@ -4,7 +4,14 @@ import os
 
 cap = cv2.VideoCapture(0)
 
+
+
 while(True):
+    ret, frame = cap.read()
+    for i in range(1,26,1):
+
+        # Display the resulting frame
+        cv2.imshow('frame',frame)
     # Capture frame-by-frameT
     ret, frame = cap.read()
 
